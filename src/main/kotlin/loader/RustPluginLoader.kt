@@ -13,7 +13,8 @@ object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     }
 
     override fun getPluginDescription(plugin: RustPlugin): RustPluginDescription {
-        TODO("Not yet implemented")
+        getPluginDescription(plugin.absolutePath)
+        TODO()
     }
 
     override fun listPlugins(): List<RustPlugin> {
@@ -25,4 +26,6 @@ object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     }
 
     private external fun loadRustPlugin(path: String)
+
+    private external fun getPluginDescription(path: String)
 }

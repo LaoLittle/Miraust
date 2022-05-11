@@ -8,10 +8,12 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
-import kotlin.io.path.createFile
 
 object RustPluginManager {
-    val rootPath = MiraiConsole.rootPath.resolve("miraust").also { it.toFile().mkdirs() }
+    private var loaded = false
+        @Synchronized set
+
+    val rootPath: Path = MiraiConsole.rootPath.resolve("miraust").also { it.toFile().mkdirs() }
 
     val plugins: List<Plugin>
         get() = TODO("Not yet implemented")
@@ -33,19 +35,19 @@ object RustPluginManager {
             .asSequence()
             .filter { it.extension == librarySuffix }
             .forEach { pluginFile ->
-                buildRustPluginDescription {
-
-                }
+                // todo!!
             }
     }
 
-    private fun load() {
-        val path = rootPath.resolve(System.mapLibraryName("miraust"))
-
-        System.load(path.absolutePathString())
+    fun loadManagerLib() {
+        if (!loaded) {
+            val path = rootPath.resolve(System.mapLibraryName("miraust"))
+            System.load(path.absolutePathString())
+            loaded = true
+        }
     }
 
     init {
-        load()
+        loadManagerLib()
     }
 }

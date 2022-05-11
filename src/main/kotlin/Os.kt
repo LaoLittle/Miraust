@@ -18,7 +18,7 @@ val PlatformOs: Os = run {
     }
 }
 
-val librarySuffix = when(PlatformOs) {
+val librarySuffix = when (PlatformOs) {
     Os.Windows -> "dll"
     Os.MacOS -> "dylib"
     else -> "so"

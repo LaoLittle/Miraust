@@ -13,7 +13,8 @@ import net.mamoe.mirai.message.data.content
 import kotlin.coroutines.CoroutineContext
 
 private val handlerJob = SupervisorJob(Miraust.coroutineContext.job)
-object EventHandler: CompletableJob by handlerJob, CoroutineScope {
+
+object EventHandler : CompletableJob by handlerJob, CoroutineScope {
     private val listeners = mutableListOf<Listener<*>>()
     override val coroutineContext: CoroutineContext
         get() = handlerJob
@@ -35,7 +36,8 @@ object EventHandler: CompletableJob by handlerJob, CoroutineScope {
         return (job as CompletableJob).complete()
     }
 
-    private inline fun <reified E: Event> listenHighest(noinline handler: suspend E.(E) -> Unit) = globalEventChannel().subscribeAlways(priority = EventPriority.HIGHEST, handler = handler)
+    private inline fun <reified E : Event> listenHighest(noinline handler: suspend E.(E) -> Unit) =
+        globalEventChannel().subscribeAlways(priority = EventPriority.HIGHEST, handler = handler)
 
     private external fun broadcast(msg: String)
 }
