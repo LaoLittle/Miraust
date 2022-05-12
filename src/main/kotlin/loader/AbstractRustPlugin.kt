@@ -1,8 +1,10 @@
 package org.laolittle.loader
 
-import jdk.tools.jlink.plugin.Plugin
+import net.mamoe.mirai.console.plugin.Plugin
 
-abstract class AbstractRustPlugin(description: RustPluginDescription) : Plugin, NativePlugin {
+abstract class AbstractRustPlugin : Plugin, NativePlugin {
+    abstract val description: RustPluginDescription
+
     final override fun loadNative() {
         RustPluginManager.loadManagerLib()
     }

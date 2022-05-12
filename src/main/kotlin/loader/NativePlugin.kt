@@ -1,6 +1,6 @@
 package org.laolittle.loader
 
-import jdk.tools.jlink.plugin.Plugin
+import net.mamoe.mirai.console.plugin.Plugin
 
 interface NativePlugin : Plugin {
     fun loadNative()

@@ -7,8 +7,21 @@ import net.mamoe.mirai.console.plugin.loader.PluginLoader
 import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
-class RustPlugin(val path: Path) : Plugin {
-    constructor(libName: String) : this(RustPluginManager.pluginsPath.resolve(System.mapLibraryName(libName)))
+class RustPlugin(val path: Path, override val description: RustPluginDescription) : Plugin, AbstractRustPlugin() {
+    constructor(path: Path, builderAction: RustPluginDescriptionBuilder.() -> Unit) : this(
+        path,
+        buildRustPluginDescription(builderAction)
+    )
+
+    constructor(
+        libName: String,
+        description: RustPluginDescription
+    ) : this(RustPluginManager.pluginsPath.resolve(System.mapLibraryName(libName)), description)
+
+    constructor(libName: String, builderAction: RustPluginDescriptionBuilder.() -> Unit) : this(
+        libName,
+        buildRustPluginDescription(builderAction)
+    )
 
     val absolutePath = path.absolutePathString()
 

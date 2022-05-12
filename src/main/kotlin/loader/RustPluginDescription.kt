@@ -16,10 +16,7 @@ class RustPluginDescription(
 class RustPluginDescriptionBuilder {
     var author: String = ""
 
-    val dependencies: Set<PluginDependency>
-        get() {
-            TODO()
-        }
+    val dependencies: Set<PluginDependency> = setOf() // todo
 
     var id: String = ""
     var info: String = ""
@@ -31,8 +28,6 @@ class RustPluginDescriptionBuilder {
     }
 
     fun build() = RustPluginDescription(author, dependencies, id, info, name, version)
-
-    external fun set()
 }
 
 fun buildRustPluginDescription(block: RustPluginDescriptionBuilder.() -> Unit): RustPluginDescription {

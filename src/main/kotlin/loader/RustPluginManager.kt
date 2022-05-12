@@ -15,8 +15,8 @@ object RustPluginManager {
 
     val rootPath: Path = MiraiConsole.rootPath.resolve("miraust").also { it.toFile().mkdirs() }
 
-    val plugins: List<Plugin>
-        get() = TODO("Not yet implemented")
+    internal val plugins: ArrayList<RustPlugin> = arrayListOf()
+
     val pluginsConfigPath: Path = rootPath.resolve("config")
     val pluginsConfigFolder: File = pluginsConfigPath.toFile()
     val pluginsDataPath: Path = rootPath.resolve("data")
