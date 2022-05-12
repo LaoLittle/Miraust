@@ -5,21 +5,31 @@ import java.nio.file.Path
 import kotlin.io.path.absolutePathString
 
 object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
-    override fun disable(plugin: RustPlugin) {
-        TODO("Not yet implemented")
+    override fun enable(plugin: RustPlugin) {
+        for ((id, p) in RustPluginManager.plugins.withIndex()) {
+            println(p === plugin)
+            if (p === plugin) {
+                enablePlugin(id)
+                break
+            }
+        }
     }
 
-    override fun enable(plugin: RustPlugin) {
-        TODO("Not yet implemented")
+    override fun disable(plugin: RustPlugin) {
+        for ((id, p) in RustPluginManager.plugins.withIndex()) {
+            if (p === plugin) {
+                disablePlugin(id)
+                break
+            }
+        }
     }
 
     override fun getPluginDescription(plugin: RustPlugin): RustPluginDescription {
-
-        TODO()
+        return plugin.description
     }
 
     override fun listPlugins(): List<RustPlugin> {
-        TODO("Not yet implemented")
+        return RustPluginManager.plugins
     }
 
     override fun load(plugin: RustPlugin) {
@@ -51,4 +61,8 @@ object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     private external fun loadRustPlugin(path: String)
 
     private external fun getPluginDescription(pluginId: Int): Array<String>
+
+    private external fun enablePlugin(pluginId: Int)
+
+    private external fun disablePlugin(pluginId: Int)
 }
