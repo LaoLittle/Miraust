@@ -13,16 +13,6 @@ class RustPlugin(val path: Path, override val description: RustPluginDescription
         buildRustPluginDescription(builderAction)
     )
 
-    constructor(
-        libName: String,
-        description: RustPluginDescription
-    ) : this(RustPluginManager.pluginsPath.resolve(System.mapLibraryName(libName)), description)
-
-    constructor(libName: String, builderAction: RustPluginDescriptionBuilder.() -> Unit) : this(
-        libName,
-        buildRustPluginDescription(builderAction)
-    )
-
     val absolutePath = path.absolutePathString()
 
     override val isEnabled: Boolean
