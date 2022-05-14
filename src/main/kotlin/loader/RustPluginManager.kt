@@ -1,8 +1,6 @@
 package org.laolittle.loader
 
 import net.mamoe.mirai.console.MiraiConsole
-import net.mamoe.mirai.console.plugin.Plugin
-import net.mamoe.mirai.console.plugin.description.PluginDescription
 import org.laolittle.librarySuffix
 import java.io.File
 import java.io.FileNotFoundException
@@ -25,10 +23,6 @@ object RustPluginManager {
     val pluginsFolder: File = rootPath.toFile()
 
     fun getRootPath() = rootPath.absolutePathString()
-
-    fun getPluginDescription(plugin: Plugin): PluginDescription {
-        TODO("Not yet implemented")
-    }
 
     fun loadPlugins() {
         (pluginsFolder.listFiles() ?: throw FileNotFoundException("空文件夹"))

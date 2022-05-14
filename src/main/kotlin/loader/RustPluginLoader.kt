@@ -6,22 +6,13 @@ import kotlin.io.path.absolutePathString
 
 object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     override fun enable(plugin: RustPlugin) {
-        for ((id, p) in RustPluginManager.plugins.withIndex()) {
-            println(p === plugin)
-            if (p === plugin) {
-                enablePlugin(id)
-                break
-            }
-        }
+        enablePlugin(plugin.pluginPointer)
+        plugin.enabled = true
     }
 
     override fun disable(plugin: RustPlugin) {
-        for ((id, p) in RustPluginManager.plugins.withIndex()) {
-            if (p === plugin) {
-                disablePlugin(id)
-                break
-            }
-        }
+        disablePlugin(plugin.pluginPointer)
+        plugin.enabled = false
     }
 
     override fun getPluginDescription(plugin: RustPlugin): RustPluginDescription {
@@ -33,21 +24,19 @@ object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     }
 
     override fun load(plugin: RustPlugin) {
-        loadRustPlugin(plugin.absolutePath)
+        loadPlugin(plugin.absolutePath)
     }
 
     fun load(libName: String): RustPlugin {
         return load(RustPluginManager.pluginsPath.resolve(System.mapLibraryName(libName)))
     }
 
-    fun load(path: Path): RustPlugin {
-        loadRustPlugin(path.absolutePathString())
-        val pluginId = RustPluginManager.plugins.size
+    private fun load(path: Path): RustPlugin {
+        val pluginPointer = loadPlugin(path.absolutePathString())
 
-        val desc = getPluginDescription(pluginId)
-        val (id, name, author, version) = desc
+        val (id, name, author, version) = getPluginDescription(pluginPointer)
 
-        val loaded = RustPlugin(path) {
+        val loaded = RustPlugin(path, pluginPointer) {
             this.id = id
             this.name = name
             this.author = author
@@ -58,11 +47,14 @@ object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
         return loaded
     }
 
-    private external fun loadRustPlugin(path: String)
+    private external fun loadPlugin(path: String): RawPointer
 
-    private external fun getPluginDescription(pluginId: Int): Array<String>
+    /** Will close the library of this plugin */
+    private external fun unloadPlugin(pluginPointer: RawPointer)
 
-    private external fun enablePlugin(pluginId: Int)
+    private external fun getPluginDescription(pluginPointer: RawPointer): Array<String>
 
-    private external fun disablePlugin(pluginId: Int)
+    private external fun enablePlugin(pluginPointer: RawPointer)
+
+    private external fun disablePlugin(pluginPointer: RawPointer)
 }
