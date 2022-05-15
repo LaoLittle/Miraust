@@ -21,7 +21,7 @@ class RustPluginDescriptionBuilder {
     var id: String = ""
     var info: String = ""
     var name: String = id
-    var version: SemVersion = SemVersion("0.0.0")
+    private var version: SemVersion = SemVersion("0.0.0")
 
     fun setVersion(version: String) {
         this.version = SemVersion(version)
