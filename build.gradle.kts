@@ -15,8 +15,19 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.3")
+    testImplementation(kotlin("test"))
 }
+
+tasks {
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
+        }
+    }
+}
+
+
 
 val generateJniHeaders: Task by tasks.creating {
     group = "build"

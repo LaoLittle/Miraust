@@ -6,13 +6,16 @@ import kotlin.io.path.absolutePathString
 
 object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     override fun enable(plugin: RustPlugin) {
-        enablePlugin(plugin.pluginPointer)
+        if (!plugin.isEnabled) enablePlugin(plugin.pluginPointer)
+        else throw IllegalStateException("Plugin ${plugin.description.name} is already enabled")
         plugin.enabled = true
     }
 
     override fun disable(plugin: RustPlugin) {
-        disablePlugin(plugin.pluginPointer)
-        plugin.enabled = false
+        if (plugin.isEnabled) {
+            disablePlugin(plugin.pluginPointer)
+            plugin.enabled = false
+        }
     }
 
     override fun getPluginDescription(plugin: RustPlugin): RustPluginDescription {
@@ -24,14 +27,15 @@ object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     }
 
     override fun load(plugin: RustPlugin) {
-        loadPlugin(plugin.absolutePath)
+        // nothing to do
+        // throw IllegalStateException("Plugin is already loaded")
     }
 
-    fun load(libName: String): RustPlugin {
+    fun loadLibrary(libName: String): RustPlugin {
         return load(RustPluginManager.pluginsPath.resolve(System.mapLibraryName(libName)))
     }
 
-    private fun load(path: Path): RustPlugin {
+    fun load(path: Path): RustPlugin {
         val pluginPointer = loadPlugin(path.absolutePathString())
 
         val (id, name, author, version) = getPluginDescription(pluginPointer)
@@ -57,4 +61,8 @@ object RustPluginLoader : PluginLoader<RustPlugin, RustPluginDescription> {
     private external fun enablePlugin(pluginPointer: RawPointer)
 
     private external fun disablePlugin(pluginPointer: RawPointer)
+
+    init {
+        RustPluginManager.loadManagerLib()
+    }
 }

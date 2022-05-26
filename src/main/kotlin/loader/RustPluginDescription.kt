@@ -4,7 +4,7 @@ import net.mamoe.mirai.console.plugin.description.PluginDependency
 import net.mamoe.mirai.console.plugin.description.PluginDescription
 import net.mamoe.mirai.console.util.SemVersion
 
-class RustPluginDescription(
+data class RustPluginDescription(
     override val author: String,
     override val dependencies: Set<PluginDependency>,
     override val id: String,

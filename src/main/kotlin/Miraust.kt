@@ -4,7 +4,7 @@ import net.mamoe.mirai.console.extension.PluginComponentStorage
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.utils.info
-import org.laolittle.loader.RustPluginLoader
+import org.laolittle.loader.RustPluginManager
 
 object Miraust : KotlinPlugin(
     JvmPluginDescription(
@@ -16,11 +16,14 @@ object Miraust : KotlinPlugin(
     }
 ) {
     override fun PluginComponentStorage.onLoad() {
-        contributePluginLoader { RustPluginLoader }
+        // contributePluginLoader { RustPluginLoader }
+
+        RustPluginManager.loadPlugins()
     }
 
     override fun onEnable() {
         logger.info { "Plugin loaded" }
         EventHandler.start()
+        RustPluginManager.enablePlugins()
     }
 }
