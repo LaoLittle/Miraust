@@ -19,7 +19,8 @@ class RustPlugin(
 
     val absolutePath = path.absolutePathString()
 
-    internal var enabled = false
+    val isDropped: Boolean
+        get() = dropped
 
     override val isEnabled: Boolean
         get() = enabled

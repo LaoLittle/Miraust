@@ -1,5 +1,6 @@
 package org.laolittle
 
+import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.extension.PluginComponentStorage
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
@@ -22,7 +23,9 @@ object Miraust : KotlinPlugin(
     }
 
     override fun onEnable() {
+        ManagerCommand.register()
         logger.info { "Plugin loaded" }
+
         EventHandler.start()
         RustPluginManager.enablePlugins()
     }
